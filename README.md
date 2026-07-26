@@ -1,6 +1,6 @@
 # Automated Copywriting & Tone Transformer
 
-Generative AI Engineering  Project 2 (DecodeLabs)
+Generative AI Engineering  Project (DecodeLabs)
 LLM Provider: **Groq** (OpenAI-compatible API)
 
 ---
