@@ -15,6 +15,7 @@ from src.config import PLATFORM_RULES, DEFAULT_TEMPERATURE, DEFAULT_TOP_P
 from src.schemas import GenerationRequest, BatchJobRecord
 from src.async_pipeline import generate_one, generate_many
 from src.batch_pipeline import build_jsonl, submit_batch, check_status, fetch_results
+from src.batch_simulation import run_simulation
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -53,6 +54,14 @@ def build_parser() -> argparse.ArgumentParser:
     p_bfetch = sub.add_parser("batch-fetch", help="Download a completed batch job's results")
     p_bfetch.add_argument("--batch-id", required=True)
     p_bfetch.add_argument("--output", default="outputs/results.jsonl")
+
+    # --- batch-simulate: local fallback, no paid Batch API needed ---
+    p_bsim = sub.add_parser(
+        "batch-simulate",
+        help="Run bulk processing locally (asyncio.gather + Semaphore) — works on free tier, no Groq Batch API required",
+    )
+    p_bsim.add_argument("--input", required=True, help="Path to CSV with columns: product_name,description,platform,tone")
+    p_bsim.add_argument("--output", default="outputs/simulated_results.jsonl")
 
     return parser
 
@@ -114,6 +123,13 @@ def cmd_batch_fetch(args: argparse.Namespace) -> None:
     print(f"Results written to {path}")
 
 
+def cmd_batch_simulate(args: argparse.Namespace) -> None:
+    results = asyncio.run(run_simulation(args.input, args.output))
+    for r in results:
+        _print_copy(r)
+        print("-" * 40)
+
+
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
@@ -124,5 +140,6 @@ def main() -> None:
         "batch-submit": cmd_batch_submit,
         "batch-status": cmd_batch_status,
         "batch-fetch": cmd_batch_fetch,
+        "batch-simulate": cmd_batch_simulate,
     }
     dispatch[args.command](args)
