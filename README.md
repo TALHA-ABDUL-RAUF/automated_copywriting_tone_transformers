@@ -49,7 +49,7 @@ Why this shape, not one big `script.py`:
 | `batch_pipeline.py` | Slow path for thousands of requests                    | Optimizes for cost (50% cheaper on Groq) and throughput                     |
 | `cli.py`            | User-facing surface                                    | Keeps argument parsing out of business logic                                |
 
-Anyone can call `client.chat.completions.create()` once. Structuring it
+nyone can call `client.chat.completions.create()` once. Structuring it
 so the same prompt-compiler feeds *both* a live app and a bulk job
 without being rewritten is the point.
 
@@ -95,21 +95,21 @@ python main.py batch-fetch  --batch-id <batch_id> --output outputs/results.jsonl
 
 ## 5. Key concepts this project exercises
 
-- **Dynamic prompt template compilation** — `prompt_engine.py` uses
+- **Dynamic prompt template compilation** `prompt_engine.py` uses
   f-strings to inject `product_name`, `platform`, `tone`, `description`
   into a locked master template, with platform-specific hard
   constraints (e.g. X/Twitter → 280 chars) appended conditionally.
-- **Inference parameter tuning** — `temperature` / `top_p` are exposed
+- **Inference parameter tuning** `temperature` / `top_p` are exposed
   as CLI flags, not hardcoded, because creative variance is a business
   decision (LinkedIn ≠ Instagram).
-- **Structured output validation** — every response is parsed into a
+- **Structured output validation**  every response is parsed into a
   `MarketingCopy` Pydantic model before being accepted. If the model
   returns malformed JSON, we retry rather than silently pass garbage
   downstream.
-- **Concurrency control** — `asyncio.Semaphore` caps simultaneous
+- **Concurrency control**`asyncio.Semaphore` caps simultaneous
   in-flight requests so we don't trip Groq's rate limits; `tenacity`
   adds exponential backoff with jitter for transient failures.
-- **Batch vs. real-time tradeoff** — real-time trades cost for
+- **Batch vs. real-time tradeoff** real-time trades cost for
   latency; batch trades latency (up to 7 days) for a 50% cost cut and
   a separate, much larger rate-limit pool. This project implements
   *both* so you can reason about when to use each.
