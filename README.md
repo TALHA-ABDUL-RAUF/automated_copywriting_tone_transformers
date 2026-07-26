@@ -49,8 +49,7 @@ Why this shape, not one big `script.py`:
 | `batch_pipeline.py` | Slow path for thousands of requests                    | Optimizes for cost (50% cheaper on Groq) and throughput                     |
 | `cli.py`            | User-facing surface                                    | Keeps argument parsing out of business logic                                |
 
-This separation is the actual "engineering" DecodeLabs is grading —
-anyone can call `client.chat.completions.create()` once. Structuring it
+Anyone can call `client.chat.completions.create()` once. Structuring it
 so the same prompt-compiler feeds *both* a live app and a bulk job
 without being rewritten is the point.
 
