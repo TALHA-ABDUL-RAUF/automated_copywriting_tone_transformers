@@ -1,6 +1,6 @@
 # Automated Copywriting & Tone Transformer
 
-Generative AI Engineering — Project 2 (DecodeLabs)
+Generative AI Engineering  Project 2 (DecodeLabs)
 LLM Provider: **Groq** (OpenAI-compatible API)
 
 ---
@@ -8,7 +8,7 @@ LLM Provider: **Groq** (OpenAI-compatible API)
 ## 1. What this project is
 
 A prompt-compilation engine that turns a raw product description into
-platform-tailored, tone-controlled marketing copy — on demand (real-time)
+platform-tailored, tone-controlled marketing copy on demand (real-time)
 or at scale (batch).
 
 It is **not** "a script that calls an LLM." It is three separable
@@ -40,14 +40,14 @@ copywriting_tone_transformer/
 
 Why this shape, not one big `script.py`:
 
-| File | Single Responsibility | Why it's separate |
-|---|---|---|
-| `schemas.py` | Defines the *contract* of what "done" looks like | The model can hallucinate structure; the schema can't |
-| `prompt_engine.py` | Compiles variables into the frozen brand-safe template | So the brand voice/rules live in ONE place, not scattered across call sites |
-| `config.py` | Platform character limits, model name, defaults | So a platform rule change (e.g. X's limit changes) is a one-line edit |
-| `async_pipeline.py` | Fast path for a handful of live requests | Optimizes for latency |
-| `batch_pipeline.py` | Slow path for thousands of requests | Optimizes for cost (50% cheaper on Groq) and throughput |
-| `cli.py` | User-facing surface | Keeps argument parsing out of business logic |
+| File                  | Single Responsibility                                  | Why it's separate                                                           |
+| --------------------- | ------------------------------------------------------ | --------------------------------------------------------------------------- |
+| `schemas.py`        | Defines the*contract* of what "done" looks like      | The model can hallucinate structure; the schema can't                       |
+| `prompt_engine.py`  | Compiles variables into the frozen brand-safe template | So the brand voice/rules live in ONE place, not scattered across call sites |
+| `config.py`         | Platform character limits, model name, defaults        | So a platform rule change (e.g. X's limit changes) is a one-line edit       |
+| `async_pipeline.py` | Fast path for a handful of live requests               | Optimizes for latency                                                       |
+| `batch_pipeline.py` | Slow path for thousands of requests                    | Optimizes for cost (50% cheaper on Groq) and throughput                     |
+| `cli.py`            | User-facing surface                                    | Keeps argument parsing out of business logic                                |
 
 This separation is the actual "engineering" DecodeLabs is grading —
 anyone can call `client.chat.completions.create()` once. Structuring it
