@@ -1,6 +1,6 @@
 # Automated Copywriting & Tone Transformer
 
-Generative AI Engineering  Project 2 (DecodeLabs)
+Generative AI Engineering  Project  (DecodeLabs)
 LLM Provider: **Groq** (OpenAI-compatible API)
 
 ---
@@ -8,7 +8,7 @@ LLM Provider: **Groq** (OpenAI-compatible API)
 ## 1. What this project is
 
 A prompt-compilation engine that turns a raw product description into
-platform-tailored, tone-controlled marketing copy —on demand (real-time)
+platform-tailored, tone-controlled marketing copy on demand (real-time)
 or at scale (batch).
 
 It is **not** "a script that calls an LLM." It is three separable
